@@ -9,7 +9,7 @@ function MemoryGrid({ handleClick, data }) {
           className="group bg-slate-200 rounded-xl hover:bg-amber-100">
           <button
             className="w-full h-full text-7xl cursor-pointer "
-            onClick={handleClick}>
+            onClick={() => handleClick(emoji.name, index)}>
             {decodeEntity(emoji.htmlCode[0])}
           </button>
         </li>

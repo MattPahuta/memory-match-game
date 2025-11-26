@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Start from "./components/Start";
 import MemoryGrid from "./components/MemoryGrid";
 import { shuffle } from "./utils/utils";
@@ -6,6 +6,34 @@ import { shuffle } from "./utils/utils";
 function App() {
   const [isGameStarted, setIsGameStarted] = useState(false);
   const [emojisData, setEmojisData] = useState([]);
+  const [selectedCards, setSelectedCards] = useState([]);
+  const [matchedCards, setMatchedCards] = useState([]);
+  const [isGameOver, setIsGameOver] = useState(false);
+
+  // ** Detect matching cards
+  useEffect(() => {
+    console.log(selectedCards)
+    // selectedCards contain two matching cards?
+    if (
+      selectedCards.length === 2 &&
+      selectedCards[0]?.name === selectedCards[1]?.name
+    ) {
+        // - add the cards to matchedCards, keeping any previous matched cards contained within
+        setMatchedCards((prevCards) => [
+          ...prevCards,
+          ...selectedCards,
+        ]);
+      }
+  }, [selectedCards]);
+
+  // ** Check if all cards have been matched (winning condition)
+  useEffect(() => {
+    if (emojisData.length && emojisData.length === matchedCards.length) {
+      setIsGameOver(true);
+    }
+  }, [matchedCards, emojisData]);
+
+  console.log(`Is game over? ${isGameOver}`)
 
   // ** Start Game - Retrieve data from API
   async function startGame(event) {
@@ -23,6 +51,7 @@ function App() {
 
       setEmojisData(emojisArray);
       setIsGameStarted(true);
+      setIsGameOver(false);
     } catch (error) {
       console.error(error.message)
     }
@@ -62,8 +91,19 @@ function App() {
     return shuffle(pairedEmojisArray);
   }
 
-  function turnCard() {
-    console.log('Memory card turned...');
+  console.log(selectedCards)
+
+  function turnCard(name, index) {
+
+    const selectedCardEntry = selectedCards.find(emoji => emoji.index === index);
+    // if there are 0 or 1 cards in the array
+    if (!selectedCardEntry && selectedCards.length < 2) {
+      setSelectedCards((prevCards) => [...prevCards, {name, index}])
+      // if there are 2 cards in the array
+    } else if (!selectedCardEntry && selectedCards.length === 2) {
+      setSelectedCards([{name, index}]);
+    }
+
   }
 
   return (
