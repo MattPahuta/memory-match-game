@@ -1,4 +1,3 @@
-import { decodeEntity } from 'html-entities';
 import CardButton from './CardButton';
 
 function MemoryGrid({ handleClick, data, selectedCards, matchedCards }) {
@@ -9,7 +8,7 @@ function MemoryGrid({ handleClick, data, selectedCards, matchedCards }) {
         // resolves to the object selected or undefined
         const selectedCardEntry = selectedCards.find(emoji => emoji.index === index);
         // check if card is matched
-        // resolves to the matched objecct or undefined
+        // resolves to the matched object or undefined
         const matchedCardEntry = matchedCards.find(emoji => emoji.index === index);
         
         // ToDo: rename to isCardSelected and isCardMatched??
@@ -30,7 +29,8 @@ function MemoryGrid({ handleClick, data, selectedCards, matchedCards }) {
             className={`group rounded-xl hover:bg-amber-100 ${cardStyle}`}
           >
             <CardButton
-              content={decodeEntity(emoji.htmlCode[0])}
+              index={index}
+              emoji={emoji}
               selectedCardEntry={selectedCardEntry}
               matchedCardEntry={matchedCardEntry}
               handleClick={() => handleClick(emoji.name, index)}

@@ -95,12 +95,12 @@ function App() {
 
   function turnCard(name, index) {
 
-    const selectedCardEntry = selectedCards.find(emoji => emoji.index === index);
+    // const selectedCardEntry = selectedCards.find(emoji => emoji.index === index);
     // if there are 0 or 1 cards in the array
-    if (!selectedCardEntry && selectedCards.length < 2) {
+    if (selectedCards.length < 2) {
       setSelectedCards((prevCards) => [...prevCards, {name, index}])
       // if there are 2 cards in the array
-    } else if (!selectedCardEntry && selectedCards.length === 2) {
+    } else if (selectedCards.length === 2) {
       setSelectedCards([{name, index}]);
     }
 

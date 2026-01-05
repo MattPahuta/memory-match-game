@@ -1,20 +1,39 @@
-function CardButton({content, selectedCardEntry, matchedCardEntry, handleClick}) {
+import { decodeEntity } from "html-entities";
 
-  const buttonContent = (selectedCardEntry || matchedCardEntry) ? content : "?";
+function CardButton({
+  index,
+  emoji,
+  selectedCardEntry,
+  matchedCardEntry,
+  handleClick,
+}) {
+  const buttonContent =
+    selectedCardEntry || matchedCardEntry
+      ? decodeEntity(emoji.htmlCode[0])
+      : "?";
+  const btnAria = matchedCardEntry
+    ? `${decodeEntity(emoji.name)}. Matched.`
+    : selectedCardEntry
+      ? `${decodeEntity(emoji.name)}. Not matched yet.`
+      : "Card upside down.";
 
   // handle styles
-  const buttonStyle = 
-    matchedCardEntry ? 'text-6xl' 
-    : selectedCardEntry ? 'text-5xl' 
-    : 'text-7xl';
+  const buttonStyle = matchedCardEntry
+    ? "text-6xl"
+    : selectedCardEntry
+      ? "text-5xl"
+      : "text-7xl";
 
   return (
     <button
       className={`w-full h-full cursor-pointer ${buttonStyle}`}
-      onClick={handleClick}>
+      onClick={selectedCardEntry ? null : handleClick}
+      disabled={matchedCardEntry}
+      aria-label={`Position ${index + 1}: ${btnAria}`}
+      aria-live="polite">
       {buttonContent}
     </button>
-  )
+  );
 }
 
 export default CardButton;
