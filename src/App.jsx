@@ -111,7 +111,14 @@ function App() {
       <h1 className="mb-6 sm:mb-10 text-3xl font-bold">Memory / Match</h1>
       <main className="">
         { !isGameStarted && <Start handleSubmit={startGame} /> }
-        { isGameStarted && <MemoryGrid data={emojisData} handleClick={turnCard} />}
+        { isGameStarted && (
+          <MemoryGrid 
+            data={emojisData} 
+            handleClick={turnCard} 
+            selectedCards={selectedCards} 
+            matchedCards={matchedCards} 
+          />)
+        }
       </main>
     </>
   )
