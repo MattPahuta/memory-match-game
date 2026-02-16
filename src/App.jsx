@@ -1,6 +1,7 @@
 import { useState, useEffect } from "react";
 import Start from "./components/Start";
 import MemoryGrid from "./components/MemoryGrid";
+import AssistiveTechInfo from "./components/AssistiveTechInfo";
 import { shuffle } from "./utils/utils";
 
 function App() {
@@ -8,7 +9,7 @@ function App() {
   const [emojisData, setEmojisData] = useState([]);
   const [selectedCards, setSelectedCards] = useState([]);
   const [matchedCards, setMatchedCards] = useState([]);
-  const [isGameOver, setIsGameOver] = useState(false);
+  const [areAllCardsMatched, setAreAllCardsMatched] = useState(false);
 
   // ** Detect matching cards
   useEffect(() => {
@@ -29,11 +30,11 @@ function App() {
   // ** Check if all cards have been matched (winning condition)
   useEffect(() => {
     if (emojisData.length && emojisData.length === matchedCards.length) {
-      setIsGameOver(true);
+      setAreAllCardsMatched(true);
     }
   }, [matchedCards, emojisData]);
 
-  console.log(`Is game over? ${isGameOver}`)
+  console.log(`Is game over? ${areAllCardsMatched}`)
 
   // ** Start Game - Retrieve data from API
   async function startGame(event) {
@@ -51,7 +52,7 @@ function App() {
 
       setEmojisData(emojisArray);
       setIsGameStarted(true);
-      setIsGameOver(false);
+      setAreAllCardsMatched(false);
     } catch (error) {
       console.error(error.message)
     }
@@ -111,6 +112,9 @@ function App() {
       <h1 className="mb-6 sm:mb-10 text-3xl font-bold">Memory / Match</h1>
       <main className="">
         { !isGameStarted && <Start handleSubmit={startGame} /> }
+        { isGameStarted && !areAllCardsMatched &&
+          <AssistiveTechInfo emojisData={emojisData} matchedCards={matchedCards} />
+        }
         { isGameStarted && (
           <MemoryGrid 
             data={emojisData} 
