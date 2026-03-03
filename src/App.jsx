@@ -2,6 +2,7 @@ import { useState, useEffect } from "react";
 import Start from "./components/Start";
 import MemoryGrid from "./components/MemoryGrid";
 import AssistiveTechInfo from "./components/AssistiveTechInfo";
+import GameOver from "./components/GameOver";
 import { shuffle } from "./utils/utils";
 
 function App() {
@@ -115,6 +116,7 @@ function App() {
         { isGameStarted && !areAllCardsMatched &&
           <AssistiveTechInfo emojisData={emojisData} matchedCards={matchedCards} />
         }
+        { areAllCardsMatched && <GameOver />}
         { isGameStarted && (
           <MemoryGrid 
             data={emojisData} 
