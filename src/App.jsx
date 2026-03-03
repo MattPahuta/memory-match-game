@@ -96,7 +96,6 @@ function App() {
   console.log(selectedCards)
 
   function turnCard(name, index) {
-
     // const selectedCardEntry = selectedCards.find(emoji => emoji.index === index);
     // if there are 0 or 1 cards in the array
     if (selectedCards.length < 2) {
@@ -105,7 +104,13 @@ function App() {
     } else if (selectedCards.length === 2) {
       setSelectedCards([{name, index}]);
     }
+  }
 
+  function resetGame() {
+    setIsGameStarted(false);
+    setAreAllCardsMatched(false);
+    setMatchedCards([]);
+    setSelectedCards([]);
   }
 
   return (
@@ -116,7 +121,7 @@ function App() {
         { isGameStarted && !areAllCardsMatched &&
           <AssistiveTechInfo emojisData={emojisData} matchedCards={matchedCards} />
         }
-        { areAllCardsMatched && <GameOver />}
+        { areAllCardsMatched && <GameOver handleClick={resetGame} />}
         { isGameStarted && (
           <MemoryGrid 
             data={emojisData} 
